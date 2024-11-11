@@ -6,41 +6,30 @@ def create_subte_network():
     G = nx.Graph()
     
     # Define lines with their stations in order
+    # Recortadas las líneas, suprimida la H, y cambiados nombres
     lines = {
-        'A': ['Plaza de Mayo', 'Peru', 'Piedras', 'Lima', 'Saenz Pena', 'Congreso', 'Pasco', 
-              'Alberti', 'Plaza Miserere', 'Loria', 'Castro Barros', 'Rio de Janeiro',
-              'Acoyte', 'Primera Junta', 'Puan', 'Carabobo'],
+        'A': ['Plaza de Mayo', 'Peru', 'Piedras', 'Lima', 'Saenz Pena', 'Congreso', 'Pasco', 'Alberti'],
         
-        'B': ['Leandro N. Alem', 'Florida', 'C. Pellegrini', 'Uruguay', 'Callao', 'Pasteur', 
-              'Pueyrredon', 'Carlos Gardel', 'Medrano', 'Angel Gallardo', 'Malabia',
-              'Dorrego', 'Federico Lacroze', 'Tronador - Villa Ortuzar', 'De Los Incas Parque Chas'],
+        'B': ['Leandro N. Alem', 'Florida', 'Carlos Pellegrini', 'Uruguay', 'Callao Sur', 'Pasteur'],
         
-        'C': ['Retiro', 'General San Martin', 'Lavalle', 'Diagonal Norte', 'Av. de Mayo', 
-              'Moreno', 'Independencia', 'San Juan', 'Constitucion'],
+        'C': ['Retiro', 'General San Martin', 'Lavalle', 'Diagonal Norte', 'Avenida de Mayo', 
+              'Moreno', 'Independencia Este', 'San Juan', 'Constitucion'],
         
-        'D': ['Catedral', '9 de Julio', 'Tribunales', 'Callao', 
-              'Facultad de Medicina', 'Pueyrredon', 'Agüero', 'Bulnes', 'Scalabrini Ortiz',
-              'Plaza Italia', 'Palermo', 'Ministro Carranza', 'Olleros', 'Jose Hernandez', 
-              'Juramento', 'Congreso de Tucuman'],
+        'D': ['Catedral', '9 de Julio', 'Tribunales', 'Callao Norte', 'Facultad de Medicina'],
               
-        'E': ['Bolivar', 'Belgrano', 'Independencia', 'San Jose', 'Entre Rios', 
-		 		  'Pichincha', 'Jujuy', 'General Urquiza', 
-              'Boedo', 'Av. La Plata', 'Jose M. Moreno', 'Emilio Mitre', 'Medalla Milagrosa',
-              'Varela', 'Plaza de los Virreyes'],
-              
-        'H': ['Once', 'Alberti', 'Venezuela', 'Humberto I', 'Inclan', 'Caseros']
+        'E': ['Bolivar', 'Belgrano', 'Independencia Oeste', 'San Jose', 'Entre Rios', 'Pichincha'],
     }
     
     # Add nodes (stations) and edges (connections)
     for line_name, stations in lines.items():
         # Add line color attribute to edges
+        # Eliminada la línea H
         line_colors = {
             'A': 'light blue',
             'B': 'red',
             'C': 'blue',
             'D': 'green',
             'E': 'purple',
-            'H': 'yellow'
         }
         
         # Add nodes and edges for each line
@@ -55,16 +44,16 @@ def create_subte_network():
                           color=line_colors[line_name])
     
     # Add transfer stations (connections between different lines)
+    # Cambiados los transbordos, indicando las dos estaciones implicadas, añadiendo transbordos faltantes y suprimiendo los sobrantes
     transfers = [
-        ('Plaza de Mayo', 'A', 'D'),
-        ('Lima', 'A', 'C'),
-        ('Plaza Miserere', 'A', 'H'),
-        ('Pueyrredon', 'B', 'D'),
-        ('Carlos Pellegrini', 'B', 'C'),
-        ('Diagonal Norte', 'C', 'D'),
-        ('Independencia', 'C', 'E'),
-        ('Jujuy', 'E', 'H'),
-        ('Venezuela', 'B', 'H')
+        ('Lima - Avenida de Mayo', 'A', 'C'),
+        ('Catedral - Peru', 'A', 'D'),
+        ('Perú - Bolivar', 'A', 'E'),
+        ('Carlos Pellegrini - 9 de Julio', 'B', 'D'),
+        ('Diagonal Norte - 9 de Julio', 'C', 'D'),
+        ('Independencia Oeste - Independencia Este', 'C', 'E'),
+        ('Catedral - Bolivar', 'D', 'E')
+
     ]
     
     # Add transfer edges
@@ -91,10 +80,11 @@ print(f"Number of stations: {len(subte_network.nodes())}")
 print(f"Number of connections: {len(subte_network.edges())}")
 
 # Find shortest path between two stations
+# Sustituido Congreso de Tucuman por Facultad de Medicina porque la parada original no tiene que existir
 shortest_path = nx.shortest_path(subte_network, 
                                source='Retiro',
-                               target='Congreso de Tucuman')
-print(f"Shortest path from Retiro to Congreso de Tucuman: {shortest_path}")
+                               target='Facultad de Medicina')
+print(f"Shortest path from Retiro to Facultad de Medicina: {shortest_path}")
 """
 
 
