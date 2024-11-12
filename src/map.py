@@ -4,7 +4,7 @@ from map_constants import metro_times, lines
 
 def create_network():
     # Create an undirected graph
-    G = nx.Graph()
+    G = nx.DiGraph()
     
     # Add nodes (stations) and edges (connections)
     for line_name, stations in lines.items():
@@ -25,14 +25,27 @@ def create_network():
             if i < len(stations) - 1:
                 edge_name = f'{stations[i]} - {stations[i+1]}'
                 weight = metro_times[line_name][edge_name]
-                
+
                 G.add_edge(stations[i], stations[i + 1], 
-                          line=line_name, 
-                          color=line_colors[line_name],
-                          weight=weight)
+                        line=line_name, 
+                        color=line_colors[line_name],
+                        weight=weight)
+                G.add_edge(stations[i+1], stations[i], 
+                        line=line_name, 
+                        color=line_colors[line_name],
+                        weight=weight)
 
     for transfer, weight in metro_times['T'].items():
         station1, station2 = transfer.split(' - ')
         G.add_edge(station1, station2, line='T', color='orange', weight=weight)
 
     return G
+
+
+def astar(G, source, target):
+    if source == 'Alberti':
+        raise ValueError("The source cannot be Alberti")
+    if source == 'Pasco':
+        raise ValueError("The target cannot be Pasco")
+
+    return nx.astar_path(G, source=source, target=target)

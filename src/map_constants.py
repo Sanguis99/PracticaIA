@@ -46,6 +46,8 @@ metro_times = {
         "Diagonal Norte - 9 de Julio": 1,
         "Independencia Oeste - Independencia Este": 3,
         "Catedral - Bolívar": 5,
+        "Callao Norte - Callo Sur": 1,
+        "Independencia Este - Independencia Oeste": 1
     },
 }
 

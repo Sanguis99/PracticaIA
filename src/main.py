@@ -1,18 +1,15 @@
 import networkx as nx
 from matplotlib import pyplot as plt
 
-from map import create_network
+from map import create_network, astar
 
 if __name__ == '__main__':
     G = create_network()
     print(f"Number of stations: {len(G.nodes())}")
     print(f"Number of connections: {len(G.edges())}")
 
-    shortest_path = nx.astar_path(G, 
-                                source='Retiro',
-                                target='Facultad de Medicina')
+    shortest_path = astar(G, 'Retiro', 'Facultad de Medicina')
     print(f"Shortest path from Retiro to Facultad de Medicina: {shortest_path}")
-
 
     # Set up the plot
     plt.figure(figsize=(15, 10))
