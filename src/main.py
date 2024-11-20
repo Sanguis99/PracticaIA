@@ -16,7 +16,7 @@ if __name__ == '__main__':
     ax = plt.gca()
 
     # Draw the graph
-    pos = nx.spring_layout(G, k=0.5, iterations=50)
+    pos = nx.spring_layout(G, k=0.5, iterations=50, seed=420)
     nx.draw(G, pos, ax=ax, with_labels=True, node_color='lightblue', node_size=300, font_size=6, font_weight='bold')
 
     # Add edge labels
