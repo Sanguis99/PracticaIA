@@ -38,6 +38,7 @@ def create_network():
     for transfer, weight in metro_times['T'].items():
         station1, station2 = transfer.split(' - ')
         G.add_edge(station1, station2, line='T', color='orange', weight=weight)
+        G.add_edge(station2, station1, line='T', color='orange', weight=weight)
 
     return G
 
