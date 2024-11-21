@@ -45,8 +45,8 @@ def create_network():
 
 def astar(G, source, target):
     if source == 'Alberti':
-        raise ValueError("The source cannot be Alberti")
+        raise ValueError("El origen no pude ser Alberti")
     if target == 'Pasco':
-        raise ValueError("The target cannot be Pasco")
+        raise ValueError("El destino no puede ser Pasco")
 
     return nx.astar_path(G, source=source, target=target)

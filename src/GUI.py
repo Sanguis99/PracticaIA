@@ -6,6 +6,8 @@ import networkx as nx
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+import numpy as np
+
 from map_constants import metro_times
 from map import astar
 
@@ -14,7 +16,7 @@ def Window(G):
     # Definicion de la ventana para la GUI
     window = tk.Tk()
     window.rowconfigure([0, 2], minsize=100)
-    window.columnconfigure([0, 2], minsize=250)
+    window.columnconfigure([0, 2], minsize=623)
     window.state('zoomed')
 
     frameOrigen = tk.Frame(master=window, relief=tk.GROOVE, borderwidth=5)
@@ -50,16 +52,25 @@ def Window(G):
             destino = entryDestino.get()
             shortest_path = astar(G, source=origen, target=destino)
             graph = nx.DiGraph()
+            time = 0
             for i in range(len(shortest_path)):
                 graph.add_node(shortest_path[i])
                 if i < len(shortest_path) - 1:
                     edge = f'{shortest_path[i]} - {shortest_path[i+1]}'
+                    edgeInv = f'{shortest_path[i+1]} - {shortest_path[i]}'
                     line = ""
                     weight = ""
                     for linea in metro_times:
                         if edge in metro_times[linea]:
                             line = linea
                             weight = metro_times[linea][edge]
+                            time = time + int(weight)
+                            break
+                        elif edgeInv in metro_times[linea]:
+                            line = linea
+                            weight = metro_times[linea][edgeInv]
+                            time = time + int(weight)
+                            break
 
                     graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'linea:{line}\ntiempo:{weight}')
                     graph.add_edge(shortest_path[i+1], shortest_path[i])
@@ -77,7 +88,7 @@ def Window(G):
             nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_size=6)
 
             # Set title and remove axis
-            plt.title("Grafo del recorrido", fontsize=16)
+            plt.title(f'Grafo del recorrido\nTiempoTotal: {time} minutos', fontsize=16)
             plt.axis('off')
 
             # Adjust layout and display
