@@ -8,7 +8,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import numpy as np
 
-from map_constants import metro_times
+from map_constants import metro_times, stations
 from map import astar
 
 
@@ -20,19 +20,25 @@ def Window(G):
     window.state('zoomed')
     window.configure(bg='lightblue')
 
+    # Example list of stations
+
     frameOrigen = tk.Frame(master=window, relief=tk.GROOVE, borderwidth=5)
     labelOrigen = tk.Label(text="Introduce la parada origen", font=("Arial", 20), master=frameOrigen)
     labelOrigen.pack(expand=True)
-    # Definimos el espacio para introducir la estacion origen
-    entryOrigen = tk.Entry(master=frameOrigen, font='Arial 12')
-    entryOrigen.pack(fill=tk.BOTH, expand=True)
+    # Dropdown menu for selecting the origin station
+    origin_var = tk.StringVar(window)
+    origin_var.set(stations[0])  # default value
+    dropdownOrigen = tk.OptionMenu(frameOrigen, origin_var, *stations)
+    dropdownOrigen.pack(fill=tk.BOTH, expand=True)
 
     frameDestino = tk.Frame(master=window, relief=tk.GROOVE, borderwidth=5)
     labelDestino = tk.Label(text="Introduce la parada destino", font=("Arial", 20), master=frameDestino)
     labelDestino.pack(expand=True)
-    # Definimos el espacio para introducir la estacion destino
-    entryDestino = tk.Entry(master=frameDestino, font='Arial 12')
-    entryDestino.pack(fill=tk.BOTH, expand=True)
+    # Dropdown menu for selecting the destination station
+    destino_var = tk.StringVar(window)
+    destino_var.set(stations[0])  # default value
+    dropdownDestino = tk.OptionMenu(frameDestino, destino_var, *stations)
+    dropdownDestino.pack(fill=tk.BOTH, expand=True)
 
     frameFlecha = tk.Frame(master=window, relief=tk.FLAT, borderwidth=5)
     labelFlecha = tk.Label(master=frameFlecha, font=("Arial", 40), text="\u2B95")
@@ -49,29 +55,20 @@ def Window(G):
         try:
             canvas = FigureCanvasTkAgg(figure=plt.figure(figsize=(6,7)), master = window)  
             canvas.get_tk_widget().destroy()
-            origen = entryOrigen.get()
-            destino = entryDestino.get()
+            origen = origin_var.get()
+            destino = destino_var.get()
             shortest_path = astar(G, source=origen, target=destino)
             graph = nx.DiGraph()
-            time = 0
             for i in range(len(shortest_path)):
                 graph.add_node(shortest_path[i])
                 if i < len(shortest_path) - 1:
                     edge = f'{shortest_path[i]} - {shortest_path[i+1]}'
-                    edgeInv = f'{shortest_path[i+1]} - {shortest_path[i]}'
                     line = ""
                     weight = ""
                     for linea in metro_times:
                         if edge in metro_times[linea]:
                             line = linea
                             weight = metro_times[linea][edge]
-                            time = time + int(weight)
-                            break
-                        elif edgeInv in metro_times[linea]:
-                            line = linea
-                            weight = metro_times[linea][edgeInv]
-                            time = time + int(weight)
-                            break
 
                     graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'linea:{line}\ntiempo:{weight}')
                     graph.add_edge(shortest_path[i+1], shortest_path[i])
@@ -89,7 +86,7 @@ def Window(G):
             nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_size=6)
 
             # Set title and remove axis
-            plt.title(f'Grafo del recorrido\nTiempoTotal: {time} minutos', fontsize=16)
+            plt.title("Grafo del recorrido", fontsize=16)
             plt.axis('off')
 
             # Adjust layout and display

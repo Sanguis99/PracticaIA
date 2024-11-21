@@ -1,3 +1,5 @@
+from functools import reduce
+
 metro_times = {
     "A": {
         "Plaza de Mayo - Perú": 1,
@@ -63,3 +65,6 @@ lines = {
 			  
 	  'E': ['Bolívar', 'Belgrano', 'Independencia Oeste', 'San José', 'Entre Ríos', 'Pichincha'],
  }
+
+
+stations = list(reduce(lambda x, y: set(x).union(y), lines.values()))
