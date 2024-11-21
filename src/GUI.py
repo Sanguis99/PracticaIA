@@ -94,7 +94,6 @@ def Window(G):
                             break
 
                     graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'linea:{line}\ntiempo:{weight}')
-                    graph.add_edge(shortest_path[i+1], shortest_path[i])
 
             # Set up the plot
             Figure = plt.figure(figsize=(6, 7))
