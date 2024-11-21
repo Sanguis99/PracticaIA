@@ -18,6 +18,7 @@ def Window(G):
     window.rowconfigure([0, 2], minsize=100)
     window.columnconfigure([0, 2], minsize=623)
     window.state('zoomed')
+    window.configure(bg='lightblue')
 
     frameOrigen = tk.Frame(master=window, relief=tk.GROOVE, borderwidth=5)
     labelOrigen = tk.Label(text="Introduce la parada origen", font=("Arial", 20), master=frameOrigen)
