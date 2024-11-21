@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 import networkx as nx
 
@@ -8,11 +8,20 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import numpy as np
 
-from map_constants import metro_times, stations
+from map_constants import metro_times, lines
 from map import astar
 
 
 def Window(G):
+
+    def origen_changed(event):
+        comboOrigen["values"] = lines[comboLineaOrigen.get()]
+        comboOrigen['state'] = 'normal'
+
+    def destino_changed(event):
+        comboDestino["values"] = lines[comboLineaDestino.get()]
+        comboDestino['state'] = 'normal'
+
     # Definicion de la ventana para la GUI
     window = tk.Tk()
     window.rowconfigure([0, 2], minsize=100)
@@ -20,28 +29,28 @@ def Window(G):
     window.state('zoomed')
     window.configure(bg='lightblue')
 
-    # Example list of stations
-
     frameOrigen = tk.Frame(master=window, relief=tk.GROOVE, borderwidth=5)
     labelOrigen = tk.Label(text="Introduce la parada origen", font=("Arial", 20), master=frameOrigen)
     labelOrigen.pack(expand=True)
-    # Dropdown menu for selecting the origin station
-    origin_var = tk.StringVar(window)
-    origin_var.set(stations[0])  # default value
-    dropdownOrigen = tk.OptionMenu(frameOrigen, origin_var, *stations)
-    dropdownOrigen.pack(fill=tk.BOTH, expand=True)
+    # Definimos el espacio para introducir la estacion origen
+    comboOrigen = ttk.Combobox(master=frameOrigen, state="readonly", font='Arial 12', values=["Escoja primero la linea"])
+    comboLineaOrigen = ttk.Combobox(master=frameOrigen, width=2, state="readonly", font='Arial 12', values=["A", "B", "C", "D", "E"])
+    comboLineaOrigen.bind("<<ComboboxSelected>>", origen_changed)
+    comboLineaOrigen.pack(fill=tk.BOTH, side=tk.LEFT)
+    comboOrigen.pack(fill=tk.BOTH, expand=True, side=tk.RIGHT)
 
     frameDestino = tk.Frame(master=window, relief=tk.GROOVE, borderwidth=5)
     labelDestino = tk.Label(text="Introduce la parada destino", font=("Arial", 20), master=frameDestino)
     labelDestino.pack(expand=True)
-    # Dropdown menu for selecting the destination station
-    destino_var = tk.StringVar(window)
-    destino_var.set(stations[0])  # default value
-    dropdownDestino = tk.OptionMenu(frameDestino, destino_var, *stations)
-    dropdownDestino.pack(fill=tk.BOTH, expand=True)
+    # Definimos el espacio para introducir la estacion destino
+    comboDestino = ttk.Combobox(master=frameDestino, state="readonly", font='Arial 12', values=["Escoja primero la linea"])
+    comboLineaDestino = ttk.Combobox(master=frameDestino, width=2, state="readonly", font='Arial 12', values=["A", "B", "C", "D", "E"])
+    comboLineaDestino.bind("<<ComboboxSelected>>", destino_changed)
+    comboLineaDestino.pack(fill=tk.BOTH, side=tk.LEFT)
+    comboDestino.pack(fill=tk.BOTH, expand=True, side=tk.RIGHT)
 
-    frameFlecha = tk.Frame(master=window, relief=tk.FLAT, borderwidth=5)
-    labelFlecha = tk.Label(master=frameFlecha, font=("Arial", 40), text="\u2B95")
+    frameFlecha = tk.Frame(master=window, relief=tk.FLAT, borderwidth=5, background='lightblue')
+    labelFlecha = tk.Label(master=frameFlecha, font=("Arial", 40), text="\u2B95", background='lightblue')
     labelFlecha.pack(expand=True)
 
     # Posicionamiento de los frames
@@ -49,26 +58,40 @@ def Window(G):
     frameDestino.grid(row=0, column=2, sticky="E")
     frameFlecha.grid(row=0, column=1)
 
-    
+    def comprobarLineasElegidas():
+        if comboLineaOrigen.current() == -1:
+            raise ValueError("No se ha seleccionado la linea origen")
+        elif comboLineaDestino.current() == -1:
+            raise ValueError("No se ha seleccionado la linea destino")
 
     def pathImage(event):
         try:
+            comprobarLineasElegidas()
             canvas = FigureCanvasTkAgg(figure=plt.figure(figsize=(6,7)), master = window)  
             canvas.get_tk_widget().destroy()
-            origen = origin_var.get()
-            destino = destino_var.get()
+            origen = comboOrigen.get()
+            destino = comboDestino.get()
             shortest_path = astar(G, source=origen, target=destino)
             graph = nx.DiGraph()
+            time = 0
             for i in range(len(shortest_path)):
                 graph.add_node(shortest_path[i])
                 if i < len(shortest_path) - 1:
                     edge = f'{shortest_path[i]} - {shortest_path[i+1]}'
+                    edgeInv = f'{shortest_path[i+1]} - {shortest_path[i]}'
                     line = ""
                     weight = ""
                     for linea in metro_times:
                         if edge in metro_times[linea]:
                             line = linea
                             weight = metro_times[linea][edge]
+                            time = time + int(weight)
+                            break
+                        elif edgeInv in metro_times[linea]:
+                            line = linea
+                            weight = metro_times[linea][edgeInv]
+                            time = time + int(weight)
+                            break
 
                     graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'linea:{line}\ntiempo:{weight}')
                     graph.add_edge(shortest_path[i+1], shortest_path[i])
@@ -86,7 +109,7 @@ def Window(G):
             nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_size=6)
 
             # Set title and remove axis
-            plt.title("Grafo del recorrido", fontsize=16)
+            plt.title(f'Grafo del recorrido\nTiempoTotal: {time} minutos', fontsize=16)
             plt.axis('off')
 
             # Adjust layout and display
