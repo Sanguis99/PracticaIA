@@ -103,9 +103,8 @@ def Window(G):
             destino = comboDestino.get()
             shortest_path = astar(G, source=origen, target=destino)
             graph = nx.DiGraph()
-            time = 1
+            time = 0
             for i in range(len(shortest_path)):
-                time += 1
                 graph.add_node(shortest_path[i])
                 if i < len(shortest_path) - 1:
                     edge = f'{shortest_path[i]} - {shortest_path[i+1]}'
@@ -116,15 +115,15 @@ def Window(G):
                         if edge in metro_times[linea]:
                             line = linea
                             weight = metro_times[linea][edge]
-                            time += int(weight)
+                            time += int(weight) + 1
                             break
                         elif edgeInv in metro_times[linea]:
                             line = linea
                             weight = metro_times[linea][edgeInv]
-                            time += int(weight)
+                            time += int(weight) + 1
                             break
 
-                    graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'Linea:{line}\nTiempo:{weight}')
+                    graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'Linea:{line}\nTiempo:{int(weight)+1}')
 
             # Set up the plot
             Figure = plt.figure(figsize=(5, 5))
