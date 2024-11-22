@@ -52,14 +52,10 @@ metro_times = {
 }
 
 lines = {
-	  'A': ['Plaza de Mayo', 'Perú', 'Piedras', 'Lima', 'Sáenz Peña', 'Congreso', 'Pasco', 'Alberti'],
-	  
-	  'B': ['Leandro N. Alem', 'Florida', 'Carlos Pellegrini', 'Uruguay', 'Callao Norte', 'Pasteur'],
-	  
-	  'C': ['Retiro', 'General San Martín', 'Lavalle', 'Diagonal Norte', 'Avenida de Mayo', 
-			  'Moreno', 'Independencia Este', 'San Juan', 'Constitución'],
-	  
-	  'D': ['Catedral', '9 de Julio', 'Tribunales', 'Callao Sur', 'Facultad de Medicina'],
-			  
-	  'E': ['Bolívar', 'Belgrano', 'Independencia Oeste', 'San José', 'Entre Ríos', 'Pichincha'],
- }
+	'A': ['Plaza de Mayo', 'Perú', 'Piedras', 'Lima', 'Sáenz Peña', 'Congreso', 'Pasco', 'Alberti'],
+	'B': ['Leandro N. Alem', 'Florida', 'Carlos Pellegrini', 'Uruguay', 'Callao Norte', 'Pasteur'],
+	'C': ['Retiro', 'General San Martín', 'Lavalle', 'Diagonal Norte', 'Avenida de Mayo', 
+        'Moreno', 'Independencia Este', 'San Juan', 'Constitución'],
+	'D': ['Catedral', '9 de Julio', 'Tribunales', 'Callao Sur', 'Facultad de Medicina'],
+	'E': ['Bolívar', 'Belgrano', 'Independencia Oeste', 'San José', 'Entre Ríos', 'Pichincha'],
+}
