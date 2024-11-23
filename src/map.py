@@ -1,6 +1,6 @@
+import geopy.distance
 import networkx as nx
-
-from map_constants import metro_times, lines
+from map_constants import metro_times, lines, metro_coord_geodesic
 
 def create_network():
     # Create an undirected graph
@@ -42,6 +42,12 @@ def create_network():
 
     return G
 
+# Geodesic distance is the chosen h(n) that Astar requires
+def heuristic(node, target):
+    coord_node = metro_coord_geodesic[node]
+    coord_target = metro_coord_geodesic[target]
+    return geopy.distance.geodesic(coord_node,coord_target).km
+
 
 def astar(G, source, target):
     if source == 'Alberti':
@@ -49,4 +55,4 @@ def astar(G, source, target):
     if target == 'Pasco':
         raise ValueError("El destino no puede ser Pasco")
 
-    return nx.astar_path(G, source=source, target=target)
+    return nx.astar_path(G, source=source, heuristic=heuristic, target=target)

@@ -9,7 +9,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time as t
 import sys
 
-from map_constants import metro_times, lines
+from map_constants import metro_times, lines, metro_node_coord
 from map import astar
 
 
@@ -97,7 +97,7 @@ def Window(G):
         try:
             confirmBtn["relief"] = tk.SUNKEN
             comprobarLineasElegidas()
-            canvas = FigureCanvasTkAgg(figure=plt.figure(figsize=(6,7)), master = window)  
+            canvas = FigureCanvasTkAgg(figure=plt.figure(figsize=(6,5)), master = window)  
             canvas.get_tk_widget().destroy()
             origen = comboOrigen.get()
             destino = comboDestino.get()
@@ -105,7 +105,7 @@ def Window(G):
             graph = nx.DiGraph()
             time = 0
             for i in range(len(shortest_path)):
-                graph.add_node(shortest_path[i])
+                graph.add_node(shortest_path[i], pos=metro_node_coord[shortest_path[i]])
                 if i < len(shortest_path) - 1:
                     edge = f'{shortest_path[i]} - {shortest_path[i+1]}'
                     edgeInv = f'{shortest_path[i+1]} - {shortest_path[i]}'
@@ -126,11 +126,11 @@ def Window(G):
                     graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'Linea:{line}\nTiempo:{int(weight)+1}')
 
             # Set up the plot
-            Figure = plt.figure(figsize=(5, 5))
+            Figure = plt.figure(figsize=(6, 5))
             ax = plt.gca()
 
             # Draw the graph
-            pos = nx.spring_layout(graph, k=0.5, iterations=50, seed=1)
+            pos = nx.get_node_attributes(graph,'pos')
             nx.draw(graph, pos, ax=ax, with_labels=True, node_color='lightblue', node_size=300, font_size=6, font_weight='bold')
 
             # Add edge labels
