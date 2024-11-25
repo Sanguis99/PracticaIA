@@ -56,7 +56,7 @@ def Window(G):
 
     # Definimos el espacio para introducir la estacion destino
     # Labels para linea y parada
-    lblLineaDestino = tk.Label(master=frameDestino, text="linea", font=("Arial", 10, ))
+    lblLineaDestino = tk.Label(master=frameDestino, text="linea", font=("Arial", 10))
     lblParadaDestino = tk.Label(master=frameDestino, text="parada", font=("Arial", 10))
     lblLineaDestino.pack(expand=True, side=tk.LEFT)
     lblParadaDestino.pack(expand=True, side=tk.RIGHT)
