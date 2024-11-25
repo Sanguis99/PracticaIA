@@ -37,7 +37,7 @@ def Window(G):
     labelOrigen.pack(expand=True, side=tk.TOP)
     # Definimos el espacio para introducir la estacion origen
     # Labels para linea y parada
-    lblLineaOrigen = tk.Label(master=frameOrigen, text="linea", font=("Arial", 10, ))
+    lblLineaOrigen = tk.Label(master=frameOrigen, text="linea", font=("Arial", 10))
     lblParadaOrigen = tk.Label(master=frameOrigen, text="parada", font=("Arial", 10))
     lblLineaOrigen.pack(expand=True, side=tk.LEFT)
     lblParadaOrigen.pack(expand=True, side=tk.RIGHT)
