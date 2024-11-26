@@ -61,8 +61,8 @@ lines = {
 }
 
 metro_node_coord = {
-    'Plaza de Mayo': (4,0.7),
-    'Perú': (2.83,0.7),
+    'Plaza de Mayo': (4.2,0.7),
+    'Perú': (3,0.7),
     'Piedras': (1.69,0.7),
     'Lima': (0,0.7),
     'Sáenz Peña': (-1,0.7),
@@ -70,9 +70,9 @@ metro_node_coord = {
     'Pasco': (-3.23,0.7),
     'Alberti': (-4.26,0.7),
 
-    'Leandro N. Alem': (3.77,2.35),
-    'Florida': (2.62,2.35),
-    'Carlos Pellegrini': (1.2,2.35),
+    'Leandro N. Alem': (3.95,2.35),
+    'Florida': (2.75,2.35),
+    'Carlos Pellegrini': (1.55,2.35),
     'Uruguay': (-1.2,2.35),
     'Callao Norte': (-2.1,2.35),
     'Pasteur': (-3.69,2.35),
@@ -80,20 +80,20 @@ metro_node_coord = {
     'Retiro': (3.83,4.63),
     'General San Martín': (2.8,4.1),
     'Lavalle': (1.89,2.82),
-    'Diagonal Norte': (1.52,1.55),
+    'Diagonal Norte': (1.52,1.4),
     'Avenida de Mayo': (0.68,0.69),
     'Moreno': (0.68,-0.53),
     'Independencia Este': (0.68,-1.86),
     'San Juan': (0.68,-3.36),
     'Constitución': (0.68,-4.88),
 
-    'Catedral': (2.64,1.52),
-    '9 de Julio': (0.4,1.67),
+    'Catedral': (2.7,1.6),
+    '9 de Julio': (0.7,2),
     'Tribunales': (-0.64,2.94),
     'Callao Sur': (-2.1,3.6),
     'Facultad de Medicina': (-3.9,3.6),
 
-    'Bolívar': (2.7,0.01),
+    'Bolívar': (2.7,-0.15),
     'Belgrano': (1.2,-0.57),
     'Independencia Oeste': (-0.36,-1.86),
     'San José': (-1.0,-3.14),
