@@ -26,8 +26,12 @@ def Window(G):
 
     # Definicion de la ventana para la GUI
     window = tk.Tk()
+    #Le ponemos nombre a la ventana
+    window.title("Camino mas corto metro Buenos Aires")
+    #Configuramos la disposicion de los objetos
     window.rowconfigure([0, 2], minsize=100)
     window.columnconfigure([0, 2], minsize=623)
+    #Para que la pantalla salga maximizada al abrirla
     window.state('zoomed')
     window.configure(bg='lightblue')
 
@@ -105,7 +109,7 @@ def Window(G):
             graph = nx.DiGraph()
             time = 0
             for i in range(len(shortest_path)):
-                graph.add_node(shortest_path[i], pos=metro_node_coord[shortest_path[i]])
+                graph.add_node(shortest_path[i].replace(" ", "\n"), pos=metro_node_coord[shortest_path[i]])
                 if i < len(shortest_path) - 1:
                     edge = f'{shortest_path[i]} - {shortest_path[i+1]}'
                     edgeInv = f'{shortest_path[i+1]} - {shortest_path[i]}'
@@ -148,17 +152,17 @@ def Window(G):
                             time += int(weight)
                             break
 
-                    graph.add_edge(shortest_path[i], shortest_path[i+1], color=color, line=f'Linea {line}\n{int(weight)} mins')
+                    graph.add_edge(shortest_path[i].replace(" ", "\n"), shortest_path[i+1].replace(" ", "\n"), color=color, line='')
 
             # Set up the plot
-            Figure = plt.figure(figsize=(7, 7))
+            Figure = plt.figure(figsize=(7, 6))
             ax = plt.gca()
 
             # Draw the graph
             pos = nx.get_node_attributes(graph,'pos')
             edges = graph.edges()
             colors = [graph[u][v]['color'] for u,v in edges]
-            nx.draw(graph, pos, ax=ax, with_labels=True, edge_color=colors, node_color='lightblue', node_size=700, font_size=5, font_weight='bold')
+            nx.draw(graph, pos, ax=ax, with_labels=True, edge_color=colors, node_color='lightblue', node_size=700, font_size=7, font_weight='bold')
 
             # Add edge labels
             edge_labels = nx.get_edge_attributes(graph, 'line')
@@ -175,8 +179,26 @@ def Window(G):
             canvas = FigureCanvasTkAgg(Figure, master = window)   
             canvas.draw() 
 
+            #Definimos las leyendas para cada linea
+            frameLeyenda = tk.Frame(master=window)
+            #Leyenda = master, colorTexto, texto, fuente
+            leyendaA = tk.Label(master=frameLeyenda, fg='lightblue', text='Linea A\t', font="Arial 19")
+            leyendaB = tk.Label(master=frameLeyenda, fg='red', text='Linea B\t', font="Arial 19")
+            leyendaC = tk.Label(master=frameLeyenda, fg='blue', text='Linea C\t', font="Arial 19")
+            leyendaD = tk.Label(master=frameLeyenda, fg='green', text='Linea D\t', font="Arial 19")
+            leyendaE = tk.Label(master=frameLeyenda, fg='purple', text='Linea E\t', font="Arial 19")
+            leyendaT = tk.Label(master=frameLeyenda, fg='black', text='Transbordo', font="Arial 19")
+            #Las colocamos en orden
+            leyendaA.pack(side=tk.LEFT)
+            leyendaB.pack(side=tk.LEFT)
+            leyendaC.pack(side=tk.LEFT)
+            leyendaD.pack(side=tk.LEFT)
+            leyendaE.pack(side=tk.LEFT)
+            leyendaT.pack(side=tk.LEFT)
+            frameLeyenda.grid(row=2, column=0, columnspan=3)
+
             # placing the canvas on the Tkinter window
-            canvas.get_tk_widget().grid(row=2, column=0, columnspan=3) 
+            canvas.get_tk_widget().grid(row=3, column=0, columnspan=3) 
 
             # Eliminamos la figura para liberar espacio en memoria
             # Se pasa el argumento all por si había quedado alguna figura abierta, aunque no debería pasar
