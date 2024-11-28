@@ -88,9 +88,9 @@ def Window(G):
         elif comboLineaDestino.current() == -1:
             raise ValueError("No se ha seleccionado la linea destino")
         elif comboOrigen.current() == -1:
-            raise ValueError("No se ha elegido la estacion de origen")
+            raise ValueError("La estación de origen no es valida")
         elif comboDestino.current() == -1:
-            raise ValueError("No se ha elegido la estacion de destino")
+            raise ValueError("La estacion de destino no es valida")
 
     # pathImage se ejecuta cuando se pulsa el boton de confirmar paradas
     # Comprueba que efectivamente se han escogido las lineas y paradas
@@ -162,7 +162,7 @@ def Window(G):
             pos = nx.get_node_attributes(graph,'pos')
             edges = graph.edges()
             colors = [graph[u][v]['color'] for u,v in edges]
-            nx.draw(graph, pos, ax=ax, with_labels=True, edge_color=colors, node_color='lightblue', node_size=700, font_size=7, font_weight='bold')
+            nx.draw(graph, pos, ax=ax, with_labels=True, edge_color=colors, node_color='lightblue', node_size=700, font_size=7, font_weight='bold', width=2.5)
 
             # Add edge labels
             edge_labels = nx.get_edge_attributes(graph, 'line')
