@@ -155,7 +155,7 @@ def Window(G):
                     graph.add_edge(shortest_path[i].replace(" ", "\n"), shortest_path[i+1].replace(" ", "\n"), color=color, line='')
 
             # Set up the plot
-            Figure = plt.figure(figsize=(7, 6))
+            Figure = plt.figure(figsize=(7, 5.5))
             ax = plt.gca()
 
             # Draw the graph
