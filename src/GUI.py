@@ -111,34 +111,61 @@ def Window(G):
                     edgeInv = f'{shortest_path[i+1]} - {shortest_path[i]}'
                     line = ""
                     weight = ""
+                    color = ''
                     for linea in metro_times:
                         if edge in metro_times[linea]:
                             line = linea
+                            if linea == "A":
+                                color = 'lightblue'
+                            elif linea == "B":
+                                color = 'r'
+                            elif linea == "C":
+                                color = 'b'
+                            elif linea == "D":
+                                color = 'g'
+                            elif linea == "E":
+                                color = 'purple'
+                            else:
+                                color = 'k'
                             weight = metro_times[linea][edge]
-                            time += int(weight) + 1
+                            time += int(weight)
                             break
                         elif edgeInv in metro_times[linea]:
                             line = linea
+                            if linea == "A":
+                                color = 'lightblue'
+                            elif linea == "B":
+                                color = 'r'
+                            elif linea == "C":
+                                color = 'b'
+                            elif linea == "D":
+                                color = 'g'
+                            elif linea == "E":
+                                color = 'purple'
+                            else:
+                                color = 'k'
                             weight = metro_times[linea][edgeInv]
-                            time += int(weight) + 1
+                            time += int(weight)
                             break
 
-                    graph.add_edge(shortest_path[i], shortest_path[i+1], line=f'Linea:{line}\nTiempo:{int(weight)+1}')
+                    graph.add_edge(shortest_path[i], shortest_path[i+1], color=color, line=f'Linea {line}\n{int(weight)} mins')
 
             # Set up the plot
-            Figure = plt.figure(figsize=(6, 5))
+            Figure = plt.figure(figsize=(7, 7))
             ax = plt.gca()
 
             # Draw the graph
             pos = nx.get_node_attributes(graph,'pos')
-            nx.draw(graph, pos, ax=ax, with_labels=True, node_color='lightblue', node_size=300, font_size=6, font_weight='bold')
+            edges = graph.edges()
+            colors = [graph[u][v]['color'] for u,v in edges]
+            nx.draw(graph, pos, ax=ax, with_labels=True, edge_color=colors, node_color='lightblue', node_size=700, font_size=5, font_weight='bold')
 
             # Add edge labels
             edge_labels = nx.get_edge_attributes(graph, 'line')
             nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_size=6)
 
             # Set title and remove axis
-            plt.title(f'Grafo del recorrido\nTiempoTotal: {time} minutos', fontsize=16)
+            plt.title(f'Grafo del recorrido\nTiempo Total: {time} minutos', fontsize=16)
             plt.axis('off')
 
             # Adjust layout and display
